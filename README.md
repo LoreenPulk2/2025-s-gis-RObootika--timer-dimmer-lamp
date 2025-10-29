@@ -16,6 +16,8 @@ Iga meeskond **forkib** selle repo ja dokumenteerib siin oma seadme/projekti:
 - kui lamp on sisse lülitatud jälgib ise timeri rütmi (eeldatav kasutus on õhtul sisse lülitada, kui tuli põlema panna tahetakse ja tsükkel lõppeb hommikul peale lambi kustumist). 
 - *kuidas seda uuesti ehitada.*
 
+
+3D prinditud leegi link - https://www.myminifactory.com/object/3d-print-fire-pit-neopixel-rgb-desk-lamp-135797
 ## Kuidas seda repo't kasutada
 
 1. Vajuta ülal paremas nurgas **Fork**.
