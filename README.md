@@ -3,8 +3,17 @@
 See repositoorium on mõeldud IFI6203.DT kursuse "Robootika" üliõpilastele.  
 Iga meeskond **forkib** selle repo ja dokumenteerib siin oma seadme/projekti:
 - *mis probleemi lahendate ja miks see seade kasulik on;*
+- Lahendame probleemi pimedas ärkamine/magama minek. Ehitame timeri ja dimmer pirniga lambi, mis läheb põlema hommikul 30min enne äratust ja hakkab vaikselt eredamaks muutuma. Ning jääb põlema õhtul ja dimmerdab end vaikselt mahedamaks, jääb madalal eredusel põlema ning kustutab end ise ära 2h peale seatud magamineku aega. 
 - *millest seade koosneb (riistvara, kood, 3D prinditud detailid jne);*
+- pool-läbipaistev plast kuppel
+- LED pirn
+- takisti
+- taimer
+- poteinsomeeter (?)
+- toide
+- nupp 
 - *kuidas seade töötab;*
+- kui lamp on sisse lülitatud jälgib ise timeri rütmi (eeldatav kasutus on õhtul sisse lülitada, kui tuli põlema panna tahetakse ja tsükkel lõppeb hommikul peale lambi kustumist). 
 - *kuidas seda uuesti ehitada.*
 
 ## Kuidas seda repo't kasutada
