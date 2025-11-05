@@ -6,10 +6,9 @@ Iga meeskond **forkib** selle repo ja dokumenteerib siin oma seadme/projekti:
 - Lahendame probleemi pimedas ärkamine/magama minek. Ehitame timeri ja dimmer pirniga lambi, mis läheb põlema hommikul 30min enne äratust ja hakkab vaikselt eredamaks muutuma. Ning jääb põlema õhtul ja dimmerdab end vaikselt mahedamaks, jääb madalal eredusel põlema ning kustutab end ise ära 2h peale seatud magamineku aega. 
 - *millest seade koosneb (riistvara, kood, 3D prinditud detailid jne);*
 - pool-läbipaistev plast kuppel
-- LED pirn
-- takisti
+- LED pirn / LED riba 
 - taimer
-- poteinsomeeter (?)
+- real time clock
 - toide
 - nupp 
 - *kuidas seade töötab;*
@@ -18,6 +17,7 @@ Iga meeskond **forkib** selle repo ja dokumenteerib siin oma seadme/projekti:
 
 
 3D prinditud leegi link - https://www.myminifactory.com/object/3d-print-fire-pit-neopixel-rgb-desk-lamp-135797
+RTC tutorial - https://lastminuteengineers.com/ds3231-rtc-arduino-tutorial/
 ## Kuidas seda repo't kasutada
 
 1. Vajuta ülal paremas nurgas **Fork**.
