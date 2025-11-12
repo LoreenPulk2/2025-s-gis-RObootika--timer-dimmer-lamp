@@ -1,0 +1,30 @@
+#include <Wire.h>
+#include "RTClib.h"
+
+RTC_DS3231 rtc;
+const int ledPin = 3;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
+  Serial.begin(9600);
+
+  if (!rtc.begin()) {
+    Serial.println("Viga: RTC ei tööta või pole ühendatud!");
+    while (1);
+  }
+}
+
+void loop() {
+  DateTime now = rtc.now();
+
+  // Kui kell on 16:27 (ükskõik mis sekund)
+  if (now.hour() == 16 && now.minute() == 34) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Alarm – LED põleb!");
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+
+  delay(1000); // kontroll iga sekund
+}
