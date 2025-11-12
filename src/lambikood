@@ -1,0 +1,100 @@
+#include <Wire.h>
+#include "RTClib.h"
+#include <Adafruit_NeoPixel.h>
+
+#define NEOPIXEL_PIN 6
+#define NUMPIXELS 16
+#define BUTTON_PIN 7   // one side of button -> D7, other -> GND
+
+RTC_DS3231 rtc;
+Adafruit_NeoPixel pixels(NUMPIXELS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
+bool cycleActive = false;
+bool lastButtonState = HIGH;
+unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 50;
+
+const unsigned long fadeDuration = 10000UL;  // 10 s  (for testing)
+const unsigned long waitDuration = 5000UL;   // 5 s   (for testing)
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Setup start");
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  Wire.begin();
+  if (!rtc.begin()) Serial.println("⚠️ RTC not found, continuing.");
+
+  pixels.begin();
+  pixels.show();
+
+  Serial.println("Ready! Press button to start.");
+}
+
+void loop() {
+  int reading = digitalRead(BUTTON_PIN);
+
+  if (reading != lastButtonState) lastDebounceTime = millis();
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading == LOW && lastButtonState == HIGH) {
+      cycleActive = !cycleActive;
+      Serial.println(cycleActive ? "🌞 Cycle STARTED" : "🌙 Cycle STOPPED");
+      if (cycleActive) flashIndicator(); else setBrightness(0);
+    }
+  }
+  lastButtonState = reading;
+
+  if (cycleActive) runLightCycle();
+  delay(50);
+}
+
+void runLightCycle() {
+  Serial.println("Fading DOWN...");
+  fadeBrightness(255, 0, fadeDuration);
+
+  Serial.println("Waiting (off)...");
+  waitWithButtonCheck(waitDuration);
+
+  Serial.println("Fading UP...");
+  fadeBrightness(0, 255, fadeDuration);
+
+  Serial.println("Cycle complete, repeating...");
+}
+
+void flashIndicator() {
+  setBrightness(255);
+  delay(2000);
+  setBrightness(0);
+  delay(500);
+}
+
+void fadeBrightness(int startValue, int endValue, unsigned long duration) {
+  unsigned long startTime = millis();
+  while (millis() - startTime < duration && cycleActive) {
+    float progress = float(millis() - startTime) / duration;
+    int brightness = startValue + (endValue - startValue) * progress;
+    setBrightness(brightness);
+    delay(100);                     // smooth visible fade
+  }
+  setBrightness(endValue);
+}
+
+void setBrightness(int level) {
+  for (int i = 0; i < NUMPIXELS; i++)
+    pixels.setPixelColor(i, pixels.Color(level, level, level));
+  pixels.show();
+}
+
+void waitWithButtonCheck(unsigned long duration) {
+  unsigned long startTime = millis();
+  while (millis() - startTime < duration && cycleActive) {
+    if (digitalRead(BUTTON_PIN) == LOW) {
+      cycleActive = false;
+      Serial.println("Cycle stopped during wait.");
+      break;
+    }
+    delay(200);
+  }
+}
