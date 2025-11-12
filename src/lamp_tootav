@@ -1,0 +1,131 @@
+#include <Wire.h>
+#include "RTClib.h"
+#include <Adafruit_NeoPixel.h>
+
+// ----- PIN SETUP -----
+#define NEOPIXEL_PIN 6       // NeoPixel DIN → D6
+#define NUMPIXELS 16         // 16 LED ring
+#define BUTTON_PIN 7         // Button → D7 (other leg → GND)
+
+// ----- OBJECTS -----
+RTC_DS3231 rtc;
+Adafruit_NeoPixel pixels(NUMPIXELS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
+// ----- GLOBAL FLAGS -----
+bool cycleActive = false;
+unsigned long lastPressTime = 0;
+
+// ----- TIMINGS (milliseconds) -----
+const unsigned long fadeDuration = 7200000UL;   // 2 hours fade (7,200,000 ms)
+const unsigned long waitDuration = 21600000UL;  // 6 hours off (21,600,000 ms)
+
+// ----- SETUP -----
+void setup() {
+  Serial.begin(9600);
+  delay(1000); // allow Serial and RTC to settle
+  Serial.println("🌙 Starting Light Cycle Program...");
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP); // button wired to GND
+
+  // Initialize RTC first (important for I2C stability)
+  Wire.begin();
+  if (!rtc.begin()) {
+    Serial.println("⚠️ RTC not found, continuing without it.");
+  } else {
+    Serial.println("✅ RTC connected.");
+  }
+
+  // Initialize NeoPixel ring
+  pixels.begin();
+  pixels.show(); // clear all pixels
+
+  Serial.println("✅ NeoPixel ready. Press button to start.");
+}
+
+// ----- MAIN LOOP -----
+void loop() {
+  // Button toggle with simple debounce
+  if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
+    lastPressTime = millis();
+    cycleActive = !cycleActive;
+    Serial.println(cycleActive ? "🌞 Cycle STARTED" : "🌙 Cycle STOPPED");
+
+    if (cycleActive) flashIndicator();
+    else setBrightness(0);
+  }
+
+  if (cycleActive) {
+    runLightCycle();
+  }
+
+  delay(50);
+}
+
+// ----- MAIN LIGHT CYCLE -----
+void runLightCycle() {
+  Serial.println("🌇 Fading DOWN (evening)...");
+  fadeBrightness(255, 0, fadeDuration);
+
+  Serial.println("🌑 Night period (off)...");
+  waitWithButtonCheck(waitDuration);
+
+  Serial.println("🌅 Fading UP (morning)...");
+  fadeBrightness(0, 255, fadeDuration);
+
+  Serial.println("🔁 Cycle complete, repeating...");
+}
+
+// ----- 2-SECOND STARTUP FLASH -----
+void flashIndicator() {
+  setBrightness(255);
+  delay(2000);
+  setBrightness(0);
+  delay(500);
+}
+
+// ----- FADE FUNCTION -----
+void fadeBrightness(int startValue, int endValue, unsigned long duration) {
+  unsigned long startTime = millis();
+  while (millis() - startTime < duration && cycleActive) {
+    float progress = float(millis() - startTime) / duration;
+    int brightness = startValue + (endValue - startValue) * progress;
+    setBrightness(brightness);
+
+    // Debug progress every 10 seconds for long fades
+    if ((millis() / 10000) % 2 == 0) {
+      Serial.print("Brightness: ");
+      Serial.println(brightness);
+    }
+
+    delay(2000); // smooth fade updates every 2s
+  }
+  setBrightness(endValue);
+}
+
+// ----- APPLY BRIGHTNESS TO ALL PIXELS -----
+void setBrightness(int level) {
+  // warm white look: red stronger, less blue
+  int r = level;
+  int g = level * 0.8;
+  int b = level * 0.5;
+
+  for (int i = 0; i < NUMPIXELS; i++) {
+    pixels.setPixelColor(i, pixels.Color(r, g, b));
+  }
+  pixels.show();
+}
+
+// ----- WAIT PERIOD THAT CAN BE CANCELLED BY BUTTON -----
+void waitWithButtonCheck(unsigned long duration) {
+  unsigned long startTime = millis();
+  while (millis() - startTime < duration && cycleActive) {
+    if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
+      lastPressTime = millis();
+      cycleActive = false;
+      Serial.println("🛑 Cycle STOPPED during wait.");
+      break;
+    }
+    delay(500);
+  }
+}
+
