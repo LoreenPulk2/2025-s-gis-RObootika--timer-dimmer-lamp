@@ -2,59 +2,64 @@
 #include "RTClib.h"
 #include <Adafruit_NeoPixel.h>
 
+// ----- PIN SETUP -----
 #define NEOPIXEL_PIN 6
 #define NUMPIXELS 16
-#define BUTTON_PIN 7   // one side of button -> D7, other -> GND
+#define BUTTON_PIN 7
 
+// ----- OBJECTS -----
 RTC_DS3231 rtc;
 Adafruit_NeoPixel pixels(NUMPIXELS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
+// ----- GLOBAL FLAGS -----
 bool cycleActive = false;
-bool lastButtonState = HIGH;
-unsigned long lastDebounceTime = 0;
-const unsigned long debounceDelay = 50;
+unsigned long lastPressTime = 0;
 
-const unsigned long fadeDuration = 10000UL;  // 10 s  (for testing)
-const unsigned long waitDuration = 5000UL;   // 5 s   (for testing)
+// ----- TIMINGS (milliseconds) -----
+// DEMO VERSION: 30 + 30 + 30 seconds
+const unsigned long fadeDuration = 30000UL;   // 30 s fade
+const unsigned long waitDuration = 30000UL;   // 30 s off
 
+// ----- SETUP -----
 void setup() {
   Serial.begin(9600);
-  Serial.println("Setup start");
+  delay(1000);
 
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 
   Wire.begin();
-  if (!rtc.begin()) Serial.println("⚠️ RTC not found, continuing.");
+  rtc.begin();
 
   pixels.begin();
-  pixels.show();
+  pixels.show(); // clear LEDs
 
-  Serial.println("Ready! Press button to start.");
+  Serial.println("Demo mode ready. Press button to start.");
 }
 
+// ----- MAIN LOOP -----
 void loop() {
-  int reading = digitalRead(BUTTON_PIN);
+  if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
+    lastPressTime = millis();
+    cycleActive = !cycleActive;
+    Serial.println(cycleActive ? "Cycle STARTED" : "Cycle STOPPED");
 
-  if (reading != lastButtonState) lastDebounceTime = millis();
-
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (reading == LOW && lastButtonState == HIGH) {
-      cycleActive = !cycleActive;
-      Serial.println(cycleActive ? "🌞 Cycle STARTED" : "🌙 Cycle STOPPED");
-      if (cycleActive) flashIndicator(); else setBrightness(0);
-    }
+    if (cycleActive) flashIndicator();
+    else setBrightness(0);
   }
-  lastButtonState = reading;
 
-  if (cycleActive) runLightCycle();
+  if (cycleActive) {
+    runLightCycle();
+  }
+
   delay(50);
 }
 
+// ----- MAIN LIGHT CYCLE -----
 void runLightCycle() {
   Serial.println("Fading DOWN...");
   fadeBrightness(255, 0, fadeDuration);
 
-  Serial.println("Waiting (off)...");
+  Serial.println("Off period...");
   waitWithButtonCheck(waitDuration);
 
   Serial.println("Fading UP...");
@@ -63,38 +68,52 @@ void runLightCycle() {
   Serial.println("Cycle complete, repeating...");
 }
 
+// ----- STARTUP FLASH -----
 void flashIndicator() {
   setBrightness(255);
-  delay(2000);
+  delay(1000);
   setBrightness(0);
-  delay(500);
+  delay(300);
 }
 
+// ----- FADE FUNCTION -----
 void fadeBrightness(int startValue, int endValue, unsigned long duration) {
   unsigned long startTime = millis();
+  
   while (millis() - startTime < duration && cycleActive) {
     float progress = float(millis() - startTime) / duration;
     int brightness = startValue + (endValue - startValue) * progress;
+
     setBrightness(brightness);
-    delay(100);                     // smooth visible fade
+    delay(50); // smoother for short demo
   }
+  
   setBrightness(endValue);
 }
 
+// ----- SET BRIGHTNESS -----
 void setBrightness(int level) {
-  for (int i = 0; i < NUMPIXELS; i++)
-    pixels.setPixelColor(i, pixels.Color(level, level, level));
+  int r = level;
+  int g = level * 0.8;
+  int b = level * 0.5;
+
+  for (int i = 0; i < NUMPIXELS; i++) {
+    pixels.setPixelColor(i, pixels.Color(r, g, b));
+  }
   pixels.show();
 }
 
+// ----- CANCELABLE WAIT -----
 void waitWithButtonCheck(unsigned long duration) {
   unsigned long startTime = millis();
+  
   while (millis() - startTime < duration && cycleActive) {
-    if (digitalRead(BUTTON_PIN) == LOW) {
+    if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
+      lastPressTime = millis();
       cycleActive = false;
       Serial.println("Cycle stopped during wait.");
       break;
     }
-    delay(200);
+    delay(100);
   }
 }
