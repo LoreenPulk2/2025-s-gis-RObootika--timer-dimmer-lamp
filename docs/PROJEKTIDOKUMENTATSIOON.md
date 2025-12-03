@@ -4,11 +4,9 @@
 **Mis asi see on, mida ja miks me teeme? Millist praktilist probleemi see lahendab?**
 
 Näide stiilist:
-- Meie projekti eesmärk on luua ventilaator, mida saab juhtida infrapuna puldiga.
-- Seadet saab kasutada näiteks ruumi jahutamiseks olukorras, kus käega lülitile ulatamine on ebamugav.
-- Peamised komponendid: elektrimootor, servo, ventilaatori labad (3D prinditud), Arduino mikrokontroller.
-
-👉 _Asenda see kirjeldus enda seadme kirjeldusega._
+- Meie projekti eesmärk on teha lamp, mille heledustase järkjärgult kustub ja jälle põlema läheb. Näiteks õhtul paned lambi põlema ja see hakkab järjest kustuma kuni on pime, siis on ooteaeg ja peale ooteaja lõppu hakkab järkjärgult põlema süttima kuni on täismahus ja siis kustub ära. 
+- Seadet saab kasutada uinumiseks ja ärkamiseks koos valgusega. 
+- Peamised komponendid: Real time clock, nupp, lamp (3D prinditud), Arduino mikrokontroller.
 
 ---
 
@@ -18,42 +16,30 @@ Näide stiilist:
 Kirjelda kõik sisendid eraldi punktidena.  
 Näited (asenda enda projektiga):
 
-- Nupp "vasakule" puldil → IR-sensor loeb signaali
-- Nupp "paremale" puldil → IR-sensor loeb signaali
-- Nupp "+" puldil → IR-sensor loeb signaali (tõsta kiirust)
-- Nupp "-" puldil → IR-sensor loeb signaali (vähenda kiirust)
-- ON/OFF nupp → IR-sensor loeb signaali
-
-👉 _Kui sinu süsteem kasutab muid sensoreid (ultraheli, temperatuuriandur, valgusandur, joystick, BLE telefonis vms), kirjelda need siin koos füüsilise sisendi allikaga._
-
+- Nupp vajutatakse -> Lamp süttib kõige eredamal reziimil (korra vilgub, et näidata tsükli algust)
+- Taimer -> Real Time Clock
+  
 ---
 
 ## 3. Väljundite loetelu
 **Mida süsteem teeb / muudab? Millega väljund realiseeritakse?**
 
 Näited (asenda enda projektiga):
-- Ventilaator pöörleb kiiremini / aeglasemalt → DC mootor
-- Ventilaator suunab õhu vasakule / paremale → servo
 - LED süttib / kustub → LED
-- Ekraanile kuvatakse temperatuur → OLED ekraan
 
 ---
 
 ## 4. Nõuded loodavale seadmele
 **Mis peab toimuma, kui kasutaja teeb mingi toimingu? Kirjelda käitumisloogika.**
 
-Kirjuta reeglid kujul "Kui X, siis Y".  
 Näited (kohanda enda projektile):
 
-- Kui vajutatakse ON/OFF nuppu, siis:
-  - kui ventilaator on väljas → ventilaator lülitub sisse keskmise kiirusega;
-  - kui ventilaator töötab → ventilaator pöördub keskasendisse ja lülitub välja.
-
-- Kui vajutatakse vasak/noole nuppu, liigub ventilaatori pea iga vajutusega X kraadi vasakule, kuni vasak piir on käes. Kui piir käes, siis rohkem ei liigu.
-
-- Kui ventilaator töötab maksimumkiirusel ja vajutatakse "+" → kiirus ei suurene enam.
-
-👉 _Pane siia KÕIK kokkulepitud reeglid. Need reeglid on alus, mille järgi hiljem hinnatakse, kas teie lahendus vastab eesmärgile._
+- Kui vajutatakse nuppu -> LED süttib kõige eredamal reziimil
+- RTC hakkab lugema 2h -> LED hakkab vaikselt eredust vähendama
+- Kui LED on kustunud -> RTC hakkab lugema ootaega 6h
+- Kui RTC 6h on täis -> LED süttib kõige hämaramal reziimil
+- RTC hakkab lugema 2h -> LED hakkab eredust lisama
+- LED töötab täiseredusel -> Tsükkel lõppeb, LED kustub
 
 ---
 
@@ -62,15 +48,12 @@ Näited (kohanda enda projektile):
 
 Tabelina või punktidena. Nt:
 
-- Arduino Uno (mikrokontroller)
-- IR-vastuvõtja + pult (tüüp: XY123)  
-- Väike elektrimootor (DC, ___ V)
-- Mootoridraiver (L298N vms)
-- Servo (mudel: SG90 / MG90S / muu)
-- 3D-prinditud ventilaatori labad (STL-failid lisage kataloogi `hardware/`)
-- Toiteallikas (___ V / ___ A)
+- Arduino Uno R4 (mikrokontroller)
+- Nupp 
+- Real Time Clock - DS3132
+- 3D-prinditud lamp (STL-failid lisage kataloogi `hardware/`)
+- Toiteallikas (5V)
 
-👉 _Kui ise tegite 3D mudeli, lisage STL või Fusion faili `hardware/` alla. Kui kasutasite netist leitud mudelit, märkige allikas._
 
 ---
 
