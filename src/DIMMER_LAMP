@@ -66,14 +66,27 @@ void runLightCycle() {
   Serial.println("🌇 Fading DOWN (evening)...");
   fadeBrightness(255, 0, fadeDuration);
 
+  if (!cycleActive) return;
+
   Serial.println("🌑 Night period (off)...");
   waitWithButtonCheck(waitDuration);
+
+  if (!cycleActive) return;
 
   Serial.println("🌅 Fading UP (morning)...");
   fadeBrightness(0, 255, fadeDuration);
 
-  Serial.println("🔁 Cycle complete, repeating...");
+  if (!cycleActive) return;
+
+  Serial.println("🛑 Cycle finished. Stopping...");
+
+  // 🔥 Pärast tsükli lõppu kustutame LEDid täielikult
+  setBrightness(0);
+
+  // ❌ Tsükkel seisma (ei kordu enam)
+  cycleActive = false;
 }
+
 
 // ----- 2-SEKUNDILINE START VILKUMINE -----
 void flashIndicator() {
