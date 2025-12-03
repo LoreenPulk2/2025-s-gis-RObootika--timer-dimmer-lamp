@@ -59,13 +59,25 @@ void runLightCycle() {
   Serial.println("Fading DOWN...");
   fadeBrightness(255, 0, fadeDuration);
 
+  if (!cycleActive) return;
+
   Serial.println("Off period...");
   waitWithButtonCheck(waitDuration);
+
+  if (!cycleActive) return;
 
   Serial.println("Fading UP...");
   fadeBrightness(0, 255, fadeDuration);
 
-  Serial.println("Cycle complete, repeating...");
+  if (!cycleActive) return;
+
+  Serial.println("Cycle complete. Stopping...");
+
+  // Pärast tsükli lõppu kustuta LEDid
+  setBrightness(0);
+
+  // Lõpetame tsükli, ei kordu enam
+  cycleActive = false;
 }
 
 // ----- STARTUP FLASH -----
