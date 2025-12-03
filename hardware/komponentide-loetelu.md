@@ -3,12 +3,10 @@
 Täida oma projekti järgi. Eesmärk on, et järgmine tudeng saaks sama asja uuesti ehitada.
 
 ## Põhikomponendid
-- Mikrokontroller: _[nt Arduino Uno rev3 / ESP32 / muu]_  
-- Toiteplokk / aku: _[pinge, vool]_  
-- Mootor / servo / aktuaatorid: _[täpne mudel]_  
-- Sensorid: _[anduri tüüp ja mudel]_  
+- Mikrokontroller: Arduino Uno R4 
+- Toiteplokk / aku: vooluvõrk juhtmega
 - Draiverplaadid / moodulid: _[L298N, MOSFET board, jms]_  
-- Kinnitused ja mehhaanika: _[3D prinditud detailid, link STL-failile]_  
+- Kinnitused ja mehhaanika: Leek (lambikuppel), lambialus, karp
 - Kaablid, kruvid, prototüüplaud jne.
 
 ## Lingid / allikad
