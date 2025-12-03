@@ -5,9 +5,9 @@ Iga meeskond **forkib** selle repo ja dokumenteerib siin oma seadme/projekti:
 - *mis probleemi lahendate ja miks see seade kasulik on;*
 - Lahendame probleemi pimedas ärkamine/magama minek. Ehitame timeri ja dimmer pirniga lambi, mis läheb põlema hommikul 30min enne äratust ja hakkab vaikselt eredamaks muutuma. Ning jääb põlema õhtul ja dimmerdab end vaikselt mahedamaks, jääb madalal eredusel põlema ning kustutab end ise ära 2h peale seatud magamineku aega. 
 - *millest seade koosneb (riistvara, kood, 3D prinditud detailid jne);*
+- arduino uno r4
 - pool-läbipaistev plast kuppel
 - LED pirn / LED riba 
-- taimer
 - real time clock
 - toide
 - nupp 
