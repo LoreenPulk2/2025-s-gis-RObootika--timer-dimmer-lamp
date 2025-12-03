@@ -82,19 +82,23 @@ Kui skeemi pole veel joonistatud, siis vähemalt kirjelda tekstina, nt:
 **Kirjelda programmi loogikat nii, et seda on võimalik aru saada ka hiljem.**  
 Kui kood töötab, pane siia lühike selgitus + viide failile `src/DIMMER_LAMP`.  
 Programmi eesmärk on juhtida NeoPixel LED-rõngast nii, et toimub üks valgustsükkel, mis algab nupuvajutusega ja lõpeb automaatselt.
+
 **Tsükli käivitamine**
 Nuppu vajutades lülitatakse tsükkel sisse (cycleActive = true).
 Kui tsükkel töötab, saab nupuga selle igal hetkel katkestada.
+
 **Tsükli tööetapid**
 Hämardumine – LEDid muutuvad järk-järgult heledast tumedaks.
 Kustunud periood – LEDid on täielikult pimedad määratud aja.
 Heledamaks muutumine – LEDid muutuvad uuesti järk-järgult heledaks.
 Iga faasi ajal kontrollitakse, kas kasutaja vajutas nuppu. Vajutuse korral tsükkel peatub kohe.
+
 **Tsükli lõpp**
 Kui kõik kolm etappi on lõpetatud, kustutab programm LEDid (setBrightness(0)).
 cycleActive pannakse false, mis peatab tsükli edasise kordumise.
 Tsükkel ei lähe automaatselt uuesti käima.
 Uus tsükkel algab ainult uue nupuvajutusega.
+
 **Loop-funktsioon**
 loop() kontrollib:
 kas nuppu vajutati,
