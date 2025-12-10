@@ -3,7 +3,6 @@
 ## 1. Projekti eesmärk ja seadme lühikirjeldus
 **Mis asi see on, mida ja miks me teeme? Millist praktilist probleemi see lahendab?**
 
-Näide stiilist:
 - Meie projekti eesmärk on teha lamp, mille heledustase järkjärgult kustub ja jälle põlema läheb. Näiteks õhtul paned lambi põlema ja see hakkab järjest kustuma kuni on pime, siis on ooteaeg ja peale ooteaja lõppu hakkab järkjärgult põlema süttima kuni on täismahus ja siis kustub ära. 
 - Seadet saab kasutada uinumiseks ja ärkamiseks koos valgusega. 
 - Peamised komponendid: Real time clock, nupp, lamp (3D prinditud), Arduino mikrokontroller.
@@ -13,8 +12,6 @@ Näide stiilist:
 ## 2. Sisendite loetelu
 **Millised on süsteemi poolt loetavad / mõõdetavad sisendid? Millega neid mõõdetakse / tuvastatakse?**
 
-Kirjelda kõik sisendid eraldi punktidena.  
-Näited (asenda enda projektiga):
 
 - Nupp vajutatakse -> Lamp süttib kõige eredamal reziimil (korra vilgub, et näidata tsükli algust)
 - Taimer -> Real Time Clock
@@ -24,7 +21,6 @@ Näited (asenda enda projektiga):
 ## 3. Väljundite loetelu
 **Mida süsteem teeb / muudab? Millega väljund realiseeritakse?**
 
-Näited (asenda enda projektiga):
 - LED süttib / kustub → LED
 
 ---
@@ -32,7 +28,6 @@ Näited (asenda enda projektiga):
 ## 4. Nõuded loodavale seadmele
 **Mis peab toimuma, kui kasutaja teeb mingi toimingu? Kirjelda käitumisloogika.**
 
-Näited (kohanda enda projektile):
 
 - Kui vajutatakse nuppu -> LED süttib kõige eredamal reziimil
 - RTC hakkab lugema 2h -> LED hakkab vaikselt eredust vähendama
@@ -46,7 +41,6 @@ Näited (kohanda enda projektile):
 ## 5. Süsteemi füüsiliste komponentide loetelu
 **Millest seade koosneb? Lisa lingid või täpsed nimed, et keegi teine saaks sama asja uuesti osta / teha.**
 
-Tabelina või punktidena. Nt:
 
 - Arduino Uno R4 (mikrokontroller)
 - Nupp 
@@ -60,13 +54,6 @@ Tabelina või punktidena. Nt:
 ## 6. Ühendusskeem
 **Kuidas kõik osad on omavahel ühendatud?**
 
-- Lisa siia pilt või skeemi kirjeldus.
-- Fail `hardware/wiring-diagram.png` peab näitama vähemalt:
-  - milline pin Arduinol läheb millise komponendi sisendisse,
-  - kuidas on toide ühendatud.
-
-Kui skeemi pole veel joonistatud, siis vähemalt kirjelda tekstina, nt:
-
 
  ![alt text](https://github.com/user-attachments/assets/0e8d8867-b328-45fb-b893-fa0c2da9e362)
 
@@ -79,8 +66,7 @@ kollane RTC küljes - SDA
 ---
 
 ## 7. Süsteemi juhtiv kood (või pseudokood)
-**Kirjelda programmi loogikat nii, et seda on võimalik aru saada ka hiljem.**  
-Kui kood töötab, pane siia lühike selgitus + viide failile `src/DIMMER_LAMP`.  
+viide failile `src/DIMMER_LAMP`.  
 Programmi eesmärk on juhtida NeoPixel LED-rõngast nii, et toimub üks valgustsükkel, mis algab nupuvajutusega ja lõpeb automaatselt.
 
 **Tsükli käivitamine**
