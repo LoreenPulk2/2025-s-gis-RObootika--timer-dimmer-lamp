@@ -58,9 +58,13 @@
  ![alt text](https://github.com/user-attachments/assets/0e8d8867-b328-45fb-b893-fa0c2da9e362)
 
 punane - toitejuhe 5V
+
 hall - ground 
+
 kollane - signaaljuhe 
+
 roheline - SCL
+
 kollane RTC küljes - SDA
 
 ---
