@@ -74,10 +74,9 @@ Kui skeemi pole veel joonistatud, siis vähemalt kirjelda tekstina, nt:
 - Mootoridraiveri ENA → Arduino pin 5 (PWM)  
 - GND kõik ühises massis
 
- /Fritzzing sketch_bb.png 
+
  ![alt text](https://github.com/user-attachments/assets/0e8d8867-b328-45fb-b893-fa0c2da9e362)
 
-<img width="1631" height="1850" alt="image" src="https://github.com/user-attachments/assets/0e8d8867-b328-45fb-b893-fa0c2da9e362" />
 
 ---
 
