@@ -67,16 +67,14 @@ Tabelina või punktidena. Nt:
 
 Kui skeemi pole veel joonistatud, siis vähemalt kirjelda tekstina, nt:
 
-- IR-sensor OUT → Arduino digipin 7  
-- Servo signaal → Arduino digipin 6  
-- Mootoridraiveri IN1 → Arduino digipin 2  
-- Mootoridraiveri IN2 → Arduino digipin 3  
-- Mootoridraiveri ENA → Arduino pin 5 (PWM)  
-- GND kõik ühises massis
-
 
  ![alt text](https://github.com/user-attachments/assets/0e8d8867-b328-45fb-b893-fa0c2da9e362)
 
+punane - toitejuhe 5V
+hall - ground 
+kollane - signaaljuhe 
+roheline - SCL
+kollane RTC küljes - SDA
 
 ---
 
