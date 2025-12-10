@@ -23,23 +23,23 @@ const unsigned long waitDuration = 21600000UL;  // 6 hours off (21,600,000 ms)
 void setup() {
   Serial.begin(9600);
   delay(1000); // allow Serial and RTC to settle
-  Serial.println("🌙 Starting Light Cycle Program...");
+  Serial.println("Starting Light Cycle Program...");
 
   pinMode(BUTTON_PIN, INPUT_PULLUP); // button wired to GND
 
   // Initialize RTC first (important for I2C stability)
   Wire.begin();
   if (!rtc.begin()) {
-    Serial.println("⚠️ RTC not found, continuing without it.");
+    Serial.println("RTC not found, continuing without it.");
   } else {
-    Serial.println("✅ RTC connected.");
+    Serial.println("RTC connected.");
   }
 
   // Initialize NeoPixel ring
   pixels.begin();
   pixels.show(); // clear all pixels
 
-  Serial.println("✅ NeoPixel ready. Press button to start.");
+  Serial.println("NeoPixel ready. Press button to start.");
 }
 
 // ----- PÕHI TSÜKKEL -----
@@ -48,7 +48,7 @@ void loop() {
   if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
     lastPressTime = millis();
     cycleActive = !cycleActive;
-    Serial.println(cycleActive ? "🌞 Cycle STARTED" : "🌙 Cycle STOPPED");
+    Serial.println(cycleActive ? "Cycle STARTED" : "Cycle STOPPED");
 
     if (cycleActive) flashIndicator();
     else setBrightness(0);
@@ -63,27 +63,27 @@ void loop() {
 
 // ----- PÕHI VALGUSE TSÜKKEL -----
 void runLightCycle() {
-  Serial.println("🌇 Fading DOWN (evening)...");
+  Serial.println(" Fading DOWN (evening)...");
   fadeBrightness(255, 0, fadeDuration);
 
   if (!cycleActive) return;
 
-  Serial.println("🌑 Night period (off)...");
+  Serial.println(" Night period (off)...");
   waitWithButtonCheck(waitDuration);
 
   if (!cycleActive) return;
 
-  Serial.println("🌅 Fading UP (morning)...");
+  Serial.println(" Fading UP (morning)...");
   fadeBrightness(0, 255, fadeDuration);
 
   if (!cycleActive) return;
 
-  Serial.println("🛑 Cycle finished. Stopping...");
+  Serial.println(" Cycle finished. Stopping...");
 
-  // 🔥 Pärast tsükli lõppu kustutame LEDid täielikult
+  //  Pärast tsükli lõppu kustutame LEDid täielikult
   setBrightness(0);
 
-  // ❌ Tsükkel seisma (ei kordu enam)
+  //  Tsükkel seisma (ei kordu enam)
   cycleActive = false;
 }
 
@@ -135,7 +135,7 @@ void waitWithButtonCheck(unsigned long duration) {
     if (digitalRead(BUTTON_PIN) == LOW && millis() - lastPressTime > 400) {
       lastPressTime = millis();
       cycleActive = false;
-      Serial.println("🛑 Cycle STOPPED during wait.");
+      Serial.println(" Cycle STOPPED during wait.");
       break;
     }
     delay(500);
